@@ -1,0 +1,91 @@
+ select style_id   from
+        (select user_id,style_id from 
+        (select user_id,anime_id as id from user_anime where user_id=1) as s 
+	natural join anime natural join 
+        (select anime_id as id,style_id from anime_style) as n
+         )as temp group by style_id order by count(user_id) desc limit 3
+
+mysql> select user_id,anime_id as id from user_anime where user_id=1;
++---------+------+
+| user_id | id   |
++---------+------+
+|       1 |  782 |
+|       1 | 3421 |
+|       1 | 2730 |
++---------+------+
+
+mysql> select anime_id as id,style_id from anime_style;
++------+----------+
+| id   | style_id |
++------+----------+
+|  279 |       26 |
+|  279 |       30 |
+|  279 |       32 |
+|  279 |        8 |
+|  279 |        7 |
+| 3494 |        9 |
+| 3494 |       19 |
+| 3494 |       29 |
+| 3494 |       46 |
+| 3377 |       34 |
+| 3377 |        7 |
+| 3377 |       18 |
+| 3452 |       30 |
+| 3452 |       32 |
+| 3452 |        7 |
+| 3452 |       22 |
+|  782 |       30 |
+|  782 |       32 |
+|  782 |        7 |
+|  782 |        1 |
+|  782 |       50 |
+| 3421 |       30 |
+| 3421 |       32 |
+| 3421 |        7 |
+| 3421 |       22 |
+| 2730 |       11 |
+| 2730 |       30 |
+| 2730 |       22 |
++------+----------+
+
+mysql> select * from anime;
++------+------+-------+
+| id   | name | brief |
++------+------+-------+
+|  279 | a    | A     |
+|  782 | e    | E     |
+| 2730 | g    | G     |
+| 3377 | c    | C     |
+| 3421 | f    | F     |
+| 3452 | d    | D     |
+| 3494 | b    | B     |
++------+------+-------+
+
+mysql> select user_id,style_id from 
+        (select user_id,anime_id as id from user_anime where user_id=1) as s 
+	natural join anime natural join 
+        (select anime_id as id,style_id from anime_style) as n;
++---------+----------+
+| user_id | style_id |
++---------+----------+
+|       1 |       30 |1
+|       1 |       32 |1
+|       1 |        7 |1
+|       1 |        1 |1
+|       1 |       50 |1
+|       1 |       30 |2
+|       1 |       32 |2
+|       1 |        7 |2
+|       1 |       22 |1
+|       1 |       11 |1
+|       1 |       30 |3
+|       1 |       22 |2
++---------+----------+
+
+30 |3
+22 |2
+ 7 |2
+32 |2
+11 |1
+ 1 |1
+50 |1
